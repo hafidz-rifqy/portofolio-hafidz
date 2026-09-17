@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const dbPath = join(__dirname, 'database.sqlite');
+const dbPath = process.env.DB_PATH || join(__dirname, 'database.sqlite');
 const db = new DatabaseSync(dbPath);
 
 // Enable WAL mode for better performance

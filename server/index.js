@@ -18,7 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static files - serve uploads
-app.use('/uploads', express.static(join(__dirname, '..', 'public', 'uploads')));
+const uploadDir = process.env.UPLOAD_DIR || join(__dirname, '..', 'public', 'uploads');
+app.use('/uploads', express.static(uploadDir));
 
 // SSE endpoint for real-time updates
 app.get('/api/events', (req, res) => {

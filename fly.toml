@@ -1,0 +1,17 @@
+app = "portofolio-hafidz" # Nanti Fly akan otomatis membuat nama acak jika ini bentrok
+primary_region = "sin" # Singapore (paling dekat dengan Indonesia)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false # Penting agar tidak sering mati-nyala
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[mounts]
+  source = "portofolio_data"
+  destination = "/data"

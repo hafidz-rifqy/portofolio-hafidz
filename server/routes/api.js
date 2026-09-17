@@ -9,7 +9,7 @@ import { broadcast } from '../sse.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const uploadDir = join(__dirname, '..', '..', 'public', 'uploads');
+const uploadDir = process.env.UPLOAD_DIR || join(__dirname, '..', '..', 'public', 'uploads');
 if (!existsSync(uploadDir)) {
   mkdirSync(uploadDir, { recursive: true });
 }

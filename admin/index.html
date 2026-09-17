@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Studio | Hafidz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body>
+  <div id="loginView" class="login-view">
+    <div class="login-panel">
+      <p class="eyebrow">HAFIDZ / ADMIN STUDIO</p>
+      <h1>Kelola ruang digital Anda.</h1>
+      <p class="muted">Perbarui profil, karya, pengalaman, dan pesan tanpa menyentuh kode publik.</p>
+      <form id="loginForm" class="stack-form">
+        <label>Username<input id="loginUsername" required autocomplete="username" value="admin" /></label>
+        <label>Password<input id="loginPassword" required type="password" autocomplete="current-password" /></label>
+        <button class="primary-button" type="submit">Masuk ke studio <span>↗</span></button>
+      </form>
+      <p id="loginError" class="form-error"></p>
+    </div>
+  </div>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">H</span><span>Admin Studio</span></div>
+      <p class="sidebar-label">Workspace</p>
+      <nav id="sideNav" class="side-nav">
+        <button class="side-link active" data-panel="overview">Overview</button>
+        <button class="side-link" data-panel="profile">Profil & CV</button>
+        <button class="side-link" data-panel="portfolio">Portfolio</button>
+        <button class="side-link" data-panel="experience">Experience</button>
+        <button class="side-link" data-panel="social">Sosial</button>
+        <button class="side-link" data-panel="inbox">Inbox & komentar</button>
+      </nav>
+      <button id="logoutButton" class="logout-button">Keluar <span>↗</span></button>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div><p class="eyebrow">CONTROL ROOM</p><h2 id="panelTitle">Overview</h2></div><a href="/" class="view-site" target="_blank" rel="noopener">Lihat website ↗</a></header>
+      <div id="toast" class="toast"></div>
+
+      <section class="panel active" data-view="overview">
+        <div class="hero-panel"><div><p class="eyebrow">LIVE CONTENT</p><h3>Ruang untuk karya<br /><em>yang terasa hidup.</em></h3><p class="muted">Semua perubahan tersimpan melalui server admin dan langsung tersedia di portfolio publik.</p></div><div class="orbit-art"><span>H</span></div></div>
+        <div class="stat-grid"><article class="stat-card"><span>Portfolio</span><strong id="portfolioCount">—</strong></article><article class="stat-card"><span>Experience</span><strong id="experienceCount">—</strong></article><article class="stat-card"><span>Komentar</span><strong id="commentCount">—</strong></article><article class="stat-card"><span>Pesan masuk</span><strong id="contactCount">—</strong></article></div>
+      </section>
+
+      <section class="panel" data-view="profile"><div class="section-heading"><div><p class="eyebrow">IDENTITY</p><h3>Profil & CV</h3></div></div><form id="profileForm" class="editor-form" enctype="multipart/form-data"><div class="form-grid"><label>Nama<input name="name" required /></label><label>Bidang<input name="title" required /></label><label>Tagline<input name="subtitle" /></label><label>Email<input name="email" type="email" required /></label></div><label>Bio<textarea name="bio" rows="6"></textarea></label><div class="form-grid"><label>Foto profil<input name="photo" type="file" accept="image/*" /></label><label>CV (PDF)<input name="cv_file" type="file" accept="application/pdf" /></label></div><input type="hidden" name="existing_photo" /><input type="hidden" name="existing_cv" /><button class="primary-button" type="submit">Simpan profil <span>↗</span></button></form></section>
+
+      <section class="panel" data-view="portfolio"><div class="section-heading"><div><p class="eyebrow">PUBLISHED WORK</p><h3>Portfolio</h3></div><button class="secondary-button" data-action="new-portfolio">+ Tambah karya</button></div><div class="split-records portfolio-splits"><div><h4>Projects</h4><div id="projectList" class="record-list"></div></div><div><h4>Certificates</h4><div id="certificateList" class="record-list"></div></div><div><h4>Tech Stack</h4><div id="techstackList" class="record-list"></div></div></div><form id="portfolioForm" class="editor-form hidden" enctype="multipart/form-data"><input type="hidden" name="id" /><div class="form-grid"><label>Kategori<select name="category"><option value="project">Project</option><option value="certificate">Certificate</option><option value="techstack">Tech Stack</option></select></label><label>Judul<input name="title" required /></label><label>Ringkasan<input name="description" /></label><label>Durasi<input name="duration" placeholder="3 bulan" /></label><label>Teknologi<input name="tech_used" placeholder="React, Node.js" /></label><label>Urutan<input name="sort_order" type="number" value="0" /></label></div><label>Detail<textarea name="detail" rows="5"></textarea></label><label>URL situs<input name="site_url" type="url" placeholder="https://" /></label><label>Cover image<input name="image" type="file" accept="image/*" /></label><input type="hidden" name="existing_image" /><div class="form-actions"><button type="button" class="secondary-button" data-action="cancel-portfolio">Batal</button><button class="primary-button" type="submit">Simpan karya <span>↗</span></button></div></form></section>
+
+      <section class="panel" data-view="experience"><div class="section-heading"><div><p class="eyebrow">TIMELINE</p><h3>Experience</h3></div><button class="secondary-button" data-action="new-experience">+ Tambah</button></div><div id="experienceList" class="record-list"></div><form id="experienceForm" class="editor-form hidden"><input type="hidden" name="id" /><div class="form-grid"><label>Judul<input name="title" required /></label><label>Institusi<input name="institution" /></label><label>Periode<input name="period" /></label><label>Tipe<select name="type"><option value="education">Edukasi</option><option value="work">Kerja</option></select></label></div><label>Deskripsi<textarea name="description" rows="4"></textarea></label><div class="form-actions"><button type="button" class="secondary-button" data-action="cancel-experience">Batal</button><button class="primary-button" type="submit">Simpan <span>↗</span></button></div></form></section>
+
+      <section class="panel" data-view="social"><div class="section-heading"><div><p class="eyebrow">CONNECTED PRESENCE</p><h3>Social links</h3></div><button class="secondary-button" data-action="new-social">+ Tambah</button></div><div id="socialList" class="record-list"></div><form id="socialForm" class="editor-form hidden"><input type="hidden" name="id" /><div class="form-grid"><label>Platform<input name="platform" required placeholder="github" /></label><label>Icon<input name="icon" placeholder="github" /></label><label>URL<input name="url" type="url" required /></label><label>Urutan<input name="sort_order" type="number" value="0" /></label></div><div class="form-actions"><button type="button" class="secondary-button" data-action="cancel-social">Batal</button><button class="primary-button" type="submit">Simpan <span>↗</span></button></div></form></section>
+
+      <section class="panel" data-view="inbox"><div class="section-heading"><div><p class="eyebrow">COMMUNITY</p><h3>Inbox & komentar</h3></div></div><div class="split-records"><div><h4>Pesan masuk</h4><div id="contactList" class="record-list"></div></div><div><h4>Komentar publik</h4><div id="commentList" class="record-list"></div></div></div></section>
+    </main>
+  </div>
+  <script type="module" src="/admin/admin.js"></script>
+</body>
+</html>

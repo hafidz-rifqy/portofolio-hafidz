@@ -1,0 +1,54 @@
+const state={token:localStorage.getItem('adminToken'),profile:null};
+const $=(selector,root=document)=>root.querySelector(selector); const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
+const api=async(path,options={})=>{const headers={...(state.token?{Authorization:`Bearer ${state.token}`}:{})}; if(!(options.body instanceof FormData)) headers['Content-Type']='application/json'; const response=await fetch(`/api/admin${path}`,{...options,headers:{...headers,...options.headers}}); const data=await response.json().catch(()=>({})); if(!response.ok) throw new Error(data.error||'Request gagal'); return data};
+function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800)}
+function formData(form){return new FormData(form)}
+function fillForm(form,data){Object.entries(data).forEach(([key,value])=>{const field=form.elements[key];if(field&&field.type!=='file')field.value=value??''})}
+function record(item,meta,actions=true){return `<article class="record"><div class="record-main"><strong>${escapeHtml(item.title||item.name||item.platform||item.subject||'Untitled')}</strong><p>${escapeHtml(meta||item.description||item.email||'')}</p></div>${actions?`<div class="record-actions"><button data-edit="${item.id}">Edit</button><button data-delete="${item.id}">Hapus</button></div>`:''}</article>`}
+function escapeHtml(value=''){const div=document.createElement('div');div.textContent=value;return div.innerHTML}
+async function loadDashboard(){const [portfolio,experience,comments,contacts]=await Promise.all([publicGet('/portfolio'),publicGet('/experience'),publicGet('/comments'),api('/contacts')]);$('#portfolioCount').textContent=portfolio.length;$('#experienceCount').textContent=experience.length;$('#commentCount').textContent=comments.length;$('#contactCount').textContent=contacts.length; renderPortfolio(portfolio);renderExperience(experience);renderInbox(comments,contacts)}
+async function publicGet(path){const response=await fetch(`/api${path}`);return response.json()}
+function renderPortfolio(items){$('#projectList').innerHTML=items.filter(i=>i.category==='project').map(item=>record(item,item.duration||'Durasi belum diisi')).join('')||'<p class="muted">Belum ada Project.</p>';$('#certificateList').innerHTML=items.filter(i=>i.category==='certificate').map(item=>record(item,item.duration||'Durasi belum diisi')).join('')||'<p class="muted">Belum ada Certificate.</p>';$('#techstackList').innerHTML=items.filter(i=>i.category==='techstack').map(item=>record(item,item.duration||'Durasi belum diisi')).join('')||'<p class="muted">Belum ada Tech Stack.</p>';$$('[data-view="portfolio"] [data-edit]').forEach(button=>button.onclick=()=>editPortfolio(items.find(item=>item.id===Number(button.dataset.edit))));$$('[data-view="portfolio"] [data-delete]').forEach(button=>button.onclick=()=>removeRecord(`/portfolio/${button.dataset.delete}`,loadDashboard))}
+function renderExperience(items){const list=$('#experienceList');list.innerHTML=items.map(item=>record(item,`${item.institution} · ${item.period}`)).join('')||'<p class="muted">Belum ada experience.</p>';$$('[data-view="experience"] [data-edit]').forEach(button=>button.onclick=()=>editExperience(items.find(item=>item.id===Number(button.dataset.edit))));$$('[data-view="experience"] [data-delete]').forEach(button=>button.onclick=()=>removeRecord(`/experience/${button.dataset.delete}`,loadDashboard))}
+function renderInbox(comments,contacts){renderComments(comments);renderContacts(contacts)}
+function renderComments(comments){$('#commentList').innerHTML=comments.map(item=>{const avatar=item.avatar_image?`<img src="${item.avatar_image}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:`${(item.name||'?').charAt(0).toUpperCase()}`;return `<article class="record"><div class="record-main"><div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:50%;background:${item.avatar_image?'transparent':(item.avatar_color||'#6366f1')};display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0">${avatar}</span><strong>${escapeHtml(item.name)}</strong></div><p>${escapeHtml(item.message)}</p><small style="color:var(--text-muted)">${item.created_at||''}</small></div><div class="record-actions"><button data-delete="${item.id}">Hapus</button></div></article>`}).join('')||'<p class="muted">Belum ada komentar.</p>';$$('#commentList [data-delete]').forEach(button=>button.onclick=()=>removeRecord(`/comments/${button.dataset.delete}`,loadDashboard))}
+function renderContacts(contacts){$('#contactList').innerHTML=contacts.map(item=>`<article class="record"><div class="record-main"><strong>${escapeHtml(item.name)}</strong><p style="color:var(--accent-primary);font-size:12px">${escapeHtml(item.email)}</p><p>${escapeHtml(item.message)}</p><small style="color:var(--text-muted)">${item.created_at||''} · ${item.is_read?'Sudah dibaca':'<span style="color:#10b981;font-weight:600">Baru</span>'}</small></div><div class="record-actions"><button data-delete="${item.id}">Hapus</button></div></article>`).join('')||'<p class="muted">Inbox kosong.</p>';$$('#contactList [data-delete]').forEach(button=>button.onclick=()=>removeRecord(`/contacts/${button.dataset.delete}`,loadDashboard))}
+async function removeRecord(path,refresh){if(!confirm('Hapus item ini?'))return;try{await api(path,{method:'DELETE'});toast('Item dihapus');await refresh()}catch(error){toast(error.message)}}
+function editPortfolio(item){const form=$('#portfolioForm');form.classList.remove('hidden');fillForm(form,item);form.scrollIntoView({behavior:'smooth',block:'center'})}
+function editExperience(item){const form=$('#experienceForm');form.classList.remove('hidden');fillForm(form,item);form.scrollIntoView({behavior:'smooth',block:'center'})}
+function openForm(id){$(id).classList.remove('hidden');$(id).reset();$$('input[type="hidden"]', $(id)).forEach(el => el.value = '');$(id).scrollIntoView({behavior:'smooth',block:'center'})}
+function initNavigation(){ $$('.side-link').forEach(button=>button.onclick=()=>{ $$('.side-link').forEach(link=>link.classList.remove('active'));button.classList.add('active');$$('.panel').forEach(panel=>panel.classList.toggle('active',panel.dataset.view===button.dataset.panel));$('#panelTitle').textContent=button.textContent})}
+
+// Real-time SSE connection
+function initSSE(){
+  const evtSource=new EventSource('/api/events');
+  evtSource.addEventListener('new-comment',event=>{
+    const comment=JSON.parse(event.data);
+    toast(`💬 Komentar baru dari ${comment.name}`);
+    // Update count
+    const countEl=$('#commentCount');
+    if(countEl) countEl.textContent=Number(countEl.textContent||0)+1;
+    // Reload inbox
+    loadDashboard();
+  });
+  evtSource.addEventListener('new-contact',event=>{
+    const contact=JSON.parse(event.data);
+    toast(`📩 Pesan baru dari ${contact.name}`);
+    // Update count
+    const countEl=$('#contactCount');
+    if(countEl) countEl.textContent=Number(countEl.textContent||0)+1;
+    // Reload inbox
+    loadDashboard();
+  });
+  evtSource.onerror=()=>{
+    console.warn('SSE connection lost, reconnecting...');
+  };
+}
+
+async function init(){if(!state.token){$('#loginView').classList.remove('hidden');return}try{const response=await api('/comments');if(!Array.isArray(response))throw new Error('Session expired');$('#loginView').classList.add('hidden');$('#appView').classList.remove('hidden');initNavigation();initSSE();await loadProfile();await loadSocial();await loadDashboard()}catch(error){localStorage.removeItem('adminToken');state.token=null;$('#loginView').classList.remove('hidden')}}
+async function loadProfile(){const response=await fetch('/api/profile');state.profile=await response.json();fillForm($('#profileForm'),state.profile);$('#profileForm').elements.existing_photo.value=state.profile.photo||'';$('#profileForm').elements.existing_cv.value=state.profile.cv_file||''}
+async function loadSocial(){const items=await publicGet('/social');$('#socialList').innerHTML=items.map(item=>record(item,`${item.platform} · ${item.url}`)).join('')||'<p class="muted">Belum ada social link.</p>';$$('[data-view="social"] [data-edit]').forEach(button=>button.onclick=()=>{const form=$('#socialForm');form.classList.remove('hidden');fillForm(form,items.find(item=>item.id===Number(button.dataset.edit)))});$$('[data-view="social"] [data-delete]').forEach(button=>button.onclick=()=>removeRecord(`/social/${button.dataset.delete}`,loadSocial))}
+async function submitForm(form,path,method='POST'){try{const hasFile=[...form.querySelectorAll('input[type="file"]')].some(input=>input.files.length);const body=hasFile?formData(form):Object.fromEntries(new FormData(form).entries());await api(path,{method,body:hasFile?body:JSON.stringify(body)});toast('Perubahan tersimpan');form.classList.add('hidden');await loadDashboard();if(path==='/profile')await loadProfile();if(path.startsWith('/social'))await loadSocial()}catch(error){toast(error.message)}}
+$('#loginForm').onsubmit=async event=>{event.preventDefault();try{const data=await (async()=>{const response=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:$('#loginUsername').value,password:$('#loginPassword').value})});const result=await response.json();if(!response.ok)throw new Error(result.error);return result})();state.token=data.token;localStorage.setItem('adminToken',data.token);init()}catch(error){$('#loginError').textContent=error.message}};
+$('#logoutButton').onclick=async()=>{try{await api('/logout',{method:'POST'})}catch{}localStorage.removeItem('adminToken');location.reload()};
+$('#profileForm').onsubmit=event=>{event.preventDefault();submitForm(event.currentTarget,'/profile','PUT')};$('#portfolioForm').onsubmit=event=>{event.preventDefault();const id=event.currentTarget.elements.id.value;submitForm(event.currentTarget,id?`/portfolio/${id}`:'/portfolio',id?'PUT':'POST')};$('#experienceForm').onsubmit=event=>{event.preventDefault();const id=event.currentTarget.elements.id.value;submitForm(event.currentTarget,id?`/experience/${id}`:'/experience',id?'PUT':'POST')};$('#socialForm').onsubmit=event=>{event.preventDefault();const id=event.currentTarget.elements.id.value;submitForm(event.currentTarget,id?`/social/${id}`:'/social',id?'PUT':'POST')};$$('[data-action="new-portfolio"]').forEach(button=>button.onclick=()=>openForm('#portfolioForm'));$$('[data-action="new-experience"]').forEach(button=>button.onclick=()=>openForm('#experienceForm'));$$('[data-action="new-social"]').forEach(button=>button.onclick=()=>openForm('#socialForm'));$$('[data-action^="cancel-"]').forEach(button=>button.onclick=()=>button.closest('form').classList.add('hidden'));init();

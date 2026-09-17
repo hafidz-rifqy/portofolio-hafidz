@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hafidz — Portfolio</title>
+  <meta name="description" content="Portfolio interaktif Hafidz — Full Stack Developer. Melihat proyek, pengalaman, dan keahlian teknologi." />
+  <meta name="keywords" content="portfolio, developer, full stack, web development" />
+  <meta name="author" content="Hafidz" />
+  <meta property="og:title" content="Hafidz — Portfolio" />
+  <meta property="og:description" content="Portfolio interaktif Full Stack Developer" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- SVG Filters for Liquid Glass Effect -->
+  <svg style="position:absolute;width:0;height:0;">
+    <defs>
+      <filter id="liquid-glass-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" seed="2" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="glow-filter">
+        <feGaussianBlur stdDeviation="3" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+  <script type="module" crossorigin src="/assets/main-4nklfCZ_.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-CSB-7nLx.css">
+</head>
+<body>
+  <!-- ==================== NAVBAR ==================== -->
+  <nav id="navbar" class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-pill">
+        <div class="navbar-glass-indicator" id="navIndicator"></div>
+        <a href="#home" class="nav-link active" data-section="home">Home</a>
+        <a href="#about" class="nav-link" data-section="about">About</a>
+        <a href="#portfolio" class="nav-link" data-section="portfolio">Portfolio</a>
+        <a href="#experience" class="nav-link" data-section="experience">Experience</a>
+        <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO / HOME ==================== -->
+  <section id="home" class="section hero-section">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-greeting">Halo, saya</p>
+        <h1 class="hero-name" id="heroName">Hafidz</h1>
+        <div class="hero-title-wrapper">
+          <span class="hero-title-label">// </span>
+          <span class="hero-title" id="heroTitle">Full Stack Developer</span>
+          <span class="typing-cursor">|</span>
+        </div>
+        <p class="hero-subtitle" id="heroSubtitle">Crafting Digital Experiences</p>
+        <div class="hero-cta">
+          <a href="#portfolio" class="btn btn-primary">Lihat Portfolio</a>
+          <a href="#contact" class="btn btn-outline">Hubungi Saya</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrapper">
+        <div class="photo-3d-container" id="photo3d">
+          <div class="photo-shadow"></div>
+          <div class="photo-card">
+            <div class="photo-glare"></div>
+            <div class="photo-image" id="heroPhoto">
+              <div class="photo-placeholder">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section id="about" class="section about-section">
+    <div class="section-container">
+      <h2 class="section-title">
+        About Me
+      </h2>
+      <div class="about-content">
+        <div class="about-glass-card glass-card">
+          <div class="about-bio" id="aboutBio">
+            <p>Seorang developer yang passionate dalam membangun aplikasi web modern dan interaktif. Dengan pengalaman di berbagai teknologi, saya selalu berusaha menciptakan solusi digital yang elegan dan efisien.</p>
+          </div>
+          <div class="about-info">
+            <div class="info-item">
+              <span class="info-label">Nama</span>
+              <span class="info-value" id="aboutName">Hafidz</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Bidang</span>
+              <span class="info-value" id="aboutTitle">Full Stack Developer</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Email</span>
+              <span class="info-value" id="aboutEmail">hafidz@example.com</span>
+            </div>
+          </div>
+          <div class="about-actions">
+            <a href="#" class="btn btn-primary" id="downloadCV" download>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download CV
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PORTFOLIO ==================== -->
+  <section id="portfolio" class="section portfolio-section">
+    <div class="section-container">
+      <h2 class="section-title">
+        Portfolio
+      </h2>
+      <div class="portfolio-tabs">
+        <div class="portfolio-tab-bar glass-pill">
+          <div class="portfolio-tab-indicator" id="portfolioIndicator"></div>
+          <button class="portfolio-tab active" data-category="project">Projects</button>
+          <button class="portfolio-tab" data-category="certificate">Certificates</button>
+          <button class="portfolio-tab" data-category="techstack">Tech Stack</button>
+        </div>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <!-- Portfolio cards loaded via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== EXPERIENCE ==================== -->
+  <section id="experience" class="section experience-section">
+    <div class="section-container">
+      <h2 class="section-title">
+        Experience
+      </h2>
+      <div class="timeline" id="timeline">
+        <!-- Timeline items loaded via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section id="contact" class="section contact-section">
+    <div class="section-container">
+      <h2 class="section-title">
+        Contact
+      </h2>
+      <div class="contact-grid">
+        <div class="contact-info-side">
+          <div class="glass-card contact-card">
+            <h3>Mari Terhubung</h3>
+            <p>Tertarik untuk berkolaborasi atau punya pertanyaan? Jangan ragu untuk menghubungi saya.</p>
+            <div class="social-links" id="socialLinks">
+              <!-- Social links loaded via JS -->
+            </div>
+          </div>
+          <form class="glass-card contact-form" id="contactForm">
+            <h3>Kirim Pesan</h3>
+            <div class="form-group">
+              <input type="text" id="contactName" placeholder="Nama Anda" required />
+            </div>
+            <div class="form-group">
+              <input type="email" id="contactEmail" placeholder="Email Anda" required />
+            </div>
+            <div class="form-group">
+              <textarea id="contactMessage" placeholder="Pesan Anda" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">
+              Kirim Pesan
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
+        <div class="comments-side">
+          <div class="glass-card comments-section">
+            <h3>Komentar <span class="comment-count" id="commentCount">(0)</span></h3>
+            <form class="comment-form" id="commentForm">
+              <input type="text" id="commentName" placeholder="Nama Anda" required />
+              <textarea id="commentMessage" placeholder="Tulis komentar..." rows="3" required></textarea>
+              <div class="comment-upload-row" style="margin-bottom: var(--space-sm);">
+                <label for="commentImage" style="font-size: var(--text-xs); color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px dashed var(--border-subtle);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  Upload Foto Profil (Opsional)
+                </label>
+                <input type="file" id="commentImage" accept="image/*" style="display: none;" />
+                <span id="commentImageName" style="font-size: var(--text-xs); color: var(--accent-primary); margin-left: 8px; display: none;"></span>
+              </div>
+              <div class="comment-profile-row" id="commentColorRow">
+                <label class="color-picker-label">Warna profil:</label>
+                <div class="avatar-colors" id="avatarColors">
+                  <button type="button" class="avatar-color-btn active" data-color="#6366f1" style="background:#6366f1"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#ec4899" style="background:#ec4899"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#10b981" style="background:#10b981"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#f59e0b" style="background:#f59e0b"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#3b82f6" style="background:#3b82f6"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#ef4444" style="background:#ef4444"></button>
+                  <button type="button" class="avatar-color-btn" data-color="#14b8a6" style="background:#14b8a6"></button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Kirim Komentar</button>
+            </form>
+            <div class="comments-list" id="commentsList">
+              <!-- Comments loaded via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="section-container">
+      <p>&copy; <span id="currentYear">2026</span> Hafidz. Crafted with passion.</p>
+    </div>
+  </footer>
+
+  <!-- Portfolio Detail Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal glass-card" id="detailModal">
+      <button class="modal-close" id="modalClose">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-content" id="modalContent">
+        <!-- Modal content injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toastContainer"></div>
+
+</body>
+</html>
